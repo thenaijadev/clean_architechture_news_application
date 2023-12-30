@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:clean_news_application/core/Models/article_error.dart';
 import 'package:clean_news_application/core/Models/remote_datasource_error.dart';
 import 'package:clean_news_application/features/daily_news/domain/entities/article.dart';
 import 'package:clean_news_application/features/daily_news/domain/usecases/get_article_usecase.dart';

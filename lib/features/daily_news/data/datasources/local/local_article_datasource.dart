@@ -1,13 +1,16 @@
 import 'dart:convert';
+
+import 'package:clean_news_application/core/Models/local_datasource_error.dart';
 import 'package:clean_news_application/core/utils/typedef.dart';
 import 'package:clean_news_application/features/daily_news/data/models/article_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class ArticlesLocalDataSource {
-  Future<void>? saveArticle(NewsArticlesModel? articles);
+  EithertrueOrLocalDataSourceError saveArticle(
+      EitherArticleOrException articles);
 
-  Future<NewsArticlesModel> getSavedArticles();
+  EitherArticleModelOrLocalDataSourceError getSavedArticles();
 }
 
 const cachedPokemon = 'CACHED_POKEMON';
@@ -18,30 +21,38 @@ class ArticlesLocalDataSourceImpl implements ArticlesLocalDataSource {
   ArticlesLocalDataSourceImpl({required this.sharedPreferences});
 
   @override
-  Future<NewsArticlesModel> getSavedArticles() {
+  EitherArticleModelOrLocalDataSourceError getSavedArticles() async {
     final jsonString = sharedPreferences.getString(cachedPokemon);
 
     if (jsonString != null) {
-      return Future.value(NewsArticlesModel.fromJson(json.decode(jsonString)));
+      final newsArticleModel = await Future.value(
+          NewsArticlesModel.fromJson(json.decode(jsonString)));
+
+      return right(newsArticleModel);
     } else {
-      throw CacheException();
+      return left(LocalDataSourceError(
+          message: "Unable to get locally saved articles"));
     }
   }
 
   @override
-  EithertrueOrLocalDataSourceError saveArticle(NewsArticlesModel? articles) async{
-    if (articles != null) {
-    final isSaved =  await sharedPreferences.setString(
+  EithertrueOrLocalDataSourceError saveArticle(
+      EitherArticleOrException articles) async {
+    // TODO:CHECK THIS LOGIC;
+    articles.fold((l) {
+      return left(LocalDataSourceError(
+          message: "There has been an error saving articles locally"));
+    }, (r) async {
+      final isSaved = await sharedPreferences.setString(
         cachedPokemon,
         json.encode(
-          articles.toJson(),
+          r.toJson(),
         ),
       );
-      return right(
-        isSaved
-      )
-    } else {
-      throw CacheException();
-    }
+      return right(isSaved);
+    });
+
+    return left(LocalDataSourceError(
+        message: "There has been an error saving articles locally"));
   }
 }

@@ -22,7 +22,7 @@ class RemoteArticleDone extends DailyNewsState {
 }
 
 class RemoteArticleError extends DailyNewsState {
-  final RemoteDataSourseError serverError;
+  final ArticleError serverError;
 
   RemoteArticleError({required this.serverError});
   @override
