@@ -1,12 +1,18 @@
 import 'package:clean_news_application/config/router/app_router.dart';
 import 'package:clean_news_application/config/theme/app_themes.dart';
+import 'package:clean_news_application/core/connection/network_info.dart';
+import 'package:clean_news_application/features/daily_news/data/datasources/local/local_article_datasource.dart';
+import 'package:clean_news_application/features/daily_news/data/datasources/remote/news_api_service.dart';
+import 'package:clean_news_application/features/daily_news/data/repositories/article_repository.dart';
+import 'package:clean_news_application/features/daily_news/domain/usecases/get_article_usecase.dart';
 import 'package:clean_news_application/features/daily_news/presentation/bloc/bloc.dart';
-import 'package:clean_news_application/injection_container.dart';
+import 'package:data_connection_checker_tv/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:hive/hive.dart';
 
@@ -17,7 +23,7 @@ void main() async {
 
 appInitialization() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initializeDependencies();
+  // await initializeDependencies();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
       overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
   SystemChrome.setPreferredOrientations([
@@ -39,7 +45,19 @@ class MyApp extends StatelessWidget {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: BlocProvider<DailyNewsBloc>(
-        create: (context) => sl()..add(GetArticlesEvent()),
+        create: (context) => DailyNewsBloc(
+          GetArticleUseCase(
+            articleRepository: ArticleRepositoryImplementation(
+              newsApiService: NewsApiServiceImplementation(),
+              localDataSource: ArticlesLocalDataSourceImpl(
+                sharedPreferences: SharedPreferences.getInstance(),
+              ),
+              networkInfo: NetworkInfoImpl(
+                connectionChecker: DataConnectionChecker(),
+              ),
+            ),
+          ),
+        )..add(GetArticlesEvent()),
         child: MaterialApp(
           theme: theme(),
           debugShowCheckedModeBanner: false,

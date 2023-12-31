@@ -4,7 +4,6 @@ import 'package:clean_news_application/core/network/dio_client.dart';
 import 'package:clean_news_application/core/network/dio_exception.dart';
 import 'package:clean_news_application/core/utils/logger.dart';
 import 'package:clean_news_application/core/utils/typedef.dart';
-import 'package:clean_news_application/features/daily_news/data/datasources/local/local_article_datasource.dart';
 import 'package:clean_news_application/features/daily_news/data/models/article_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';

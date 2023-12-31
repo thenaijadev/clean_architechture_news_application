@@ -16,13 +16,14 @@ abstract class ArticlesLocalDataSource {
 const cachedPokemon = 'CACHED_POKEMON';
 
 class ArticlesLocalDataSourceImpl implements ArticlesLocalDataSource {
-  final SharedPreferences sharedPreferences;
+  final Future<SharedPreferences> sharedPreferences;
 
   ArticlesLocalDataSourceImpl({required this.sharedPreferences});
 
   @override
   EitherArticleModelOrLocalDataSourceError getSavedArticles() async {
-    final jsonString = sharedPreferences.getString(cachedPokemon);
+    final preferences = await sharedPreferences;
+    final jsonString = preferences.getString(cachedPokemon);
 
     if (jsonString != null) {
       final newsArticleModel = await Future.value(
@@ -39,11 +40,13 @@ class ArticlesLocalDataSourceImpl implements ArticlesLocalDataSource {
   EithertrueOrLocalDataSourceError saveArticle(
       EitherArticleOrException articles) async {
     // TODO:CHECK THIS LOGIC;
+    final preferences = await sharedPreferences;
+
     articles.fold((l) {
       return left(LocalDataSourceError(
           message: "There has been an error saving articles locally"));
     }, (r) async {
-      final isSaved = await sharedPreferences.setString(
+      final isSaved = await preferences.setString(
         cachedPokemon,
         json.encode(
           r.toJson(),
