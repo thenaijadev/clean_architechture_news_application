@@ -21,7 +21,7 @@ class NewsApiServiceImplementation implements NewsApiService {
       final response = await DioClient.instance
           .get(RoutesAndPaths.everything, queryParameters: {
         "q": "franc",
-        "apiKey": "3e34f535ad7c4d009a77f7472c132652",
+        "apiKey": "{Your API KEY}",
       });
 
       return right(NewsArticlesModel.fromMap(response));
