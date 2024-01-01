@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-ThemeData theme() {
+ThemeData darkTheme() {
   return ThemeData(
     scaffoldBackgroundColor: Colors.white,
     fontFamily: "Multi",
