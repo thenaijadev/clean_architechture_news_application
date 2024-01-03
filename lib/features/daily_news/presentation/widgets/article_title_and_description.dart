@@ -18,11 +18,11 @@ class ArticleTitleAndDescription extends StatelessWidget {
               article!.title,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Butler',
                 fontWeight: FontWeight.w900,
                 fontSize: 18,
-                color: Colors.black87,
+                color: Theme.of(context).colorScheme.primary,
               ),
             ),
 

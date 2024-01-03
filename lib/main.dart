@@ -1,4 +1,5 @@
 import 'package:clean_news_application/config/router/app_router.dart';
+import 'package:clean_news_application/config/theme/dark_theme.dart';
 import 'package:clean_news_application/config/theme/light_theme.dart';
 import 'package:clean_news_application/core/connection/network_info.dart';
 import 'package:clean_news_application/features/daily_news/data/datasources/local/local_article_datasource.dart';
@@ -66,12 +67,19 @@ class MyApp extends StatelessWidget {
             create: (context) => DarkModeBloc(),
           ),
         ],
-        child: MaterialApp(
-          theme: lightTheme(),
-          debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
-          initialRoute: "/",
-          onGenerateRoute: appRouter.onGenerateRoute,
+        child: BlocBuilder<DarkModeBloc, DarkModeState>(
+          builder: (context, state) {
+            if (state is DarkModeCurrentState) {
+              return MaterialApp(
+                theme: state.isDark ? darkTheme() : lightTheme(),
+                debugShowCheckedModeBanner: false,
+                title: 'Flutter Demo',
+                initialRoute: "/",
+                onGenerateRoute: appRouter.onGenerateRoute,
+              );
+            }
+            return const SizedBox();
+          },
         ),
       ),
     );

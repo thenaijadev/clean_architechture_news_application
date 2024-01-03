@@ -5,14 +5,10 @@ part 'dark_mode_event.dart';
 part 'dark_mode_state.dart';
 
 class DarkModeBloc extends Bloc<DarkModeEvent, DarkModeState> {
-  DarkModeBloc() : super(DarkModeStateFalse()) {
+  DarkModeBloc() : super(const DarkModeCurrentState(isDark: true)) {
     on<ToggleDarkModeEvent>((event, emit) {
       final bool isDark = event.isDark;
-      if (isDark) {
-        emit(DarkModeStateTrue());
-      } else {
-        emit(DarkModeStateTrue());
-      }
+      emit(DarkModeCurrentState(isDark: isDark));
     });
   }
 }

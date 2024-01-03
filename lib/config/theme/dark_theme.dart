@@ -2,13 +2,21 @@ import 'package:flutter/material.dart';
 
 ThemeData darkTheme() {
   return ThemeData(
-    scaffoldBackgroundColor: Colors.white,
+    scaffoldBackgroundColor: const Color.fromARGB(255, 0, 0, 0),
     fontFamily: "Multi",
+    colorScheme: const ColorScheme.dark(
+      brightness: Brightness.dark,
+      background: Colors.black,
+      primary: Colors.white,
+    ),
     appBarTheme: const AppBarTheme(
-        color: Colors.white,
-        elevation: 0,
-        centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.grey),
-        titleTextStyle: TextStyle(color: Colors.grey, fontSize: 18)),
+      backgroundColor: Colors.black,
+      elevation: 0,
+      // color: Colors.white,
+      centerTitle: true,
+      iconTheme: IconThemeData(color: Colors.grey),
+      titleTextStyle:
+          TextStyle(color: Color.fromARGB(255, 255, 255, 255), fontSize: 18),
+    ),
   );
 }

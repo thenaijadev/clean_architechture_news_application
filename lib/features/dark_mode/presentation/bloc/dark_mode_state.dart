@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'dark_mode_bloc.dart';
 
 abstract class DarkModeState extends Equatable {
@@ -7,6 +8,12 @@ abstract class DarkModeState extends Equatable {
   List<Object> get props => [];
 }
 
-class DarkModeStateFalse extends DarkModeState {}
+class DarkModeCurrentState extends DarkModeState {
+  final bool isDark;
+  const DarkModeCurrentState({
+    required this.isDark,
+  });
 
-class DarkModeStateTrue extends DarkModeState {}
+  @override
+  List<Object> get props => [isDark];
+}
