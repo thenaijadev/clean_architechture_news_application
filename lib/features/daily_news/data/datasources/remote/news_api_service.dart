@@ -28,10 +28,10 @@ class NewsApiServiceImplementation implements NewsApiService {
     } on DioException catch (e) {
       final errorMessage = DioExceptionClass.fromDioException(e).errorMessage;
       logger.e(e);
-      return left(RemoteDataSourseError(message: errorMessage));
+      return left(RemoteDataSourceError(message: errorMessage));
     } catch (e) {
       logger.e({"error": e.toString()});
-      return left(RemoteDataSourseError(message: e.toString()));
+      return left(RemoteDataSourceError(message: e.toString()));
     }
   }
 }

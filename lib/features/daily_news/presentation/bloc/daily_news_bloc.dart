@@ -25,7 +25,7 @@ class DailyNewsBloc extends Bloc<DailyNewsEvent, DailyNewsState> {
       if (r.articles.isEmpty) {
         emit(RemoteArticleError(
             serverError:
-                RemoteDataSourseError(message: "No Articles to be shown")));
+                RemoteDataSourceError(message: "No Articles to be shown")));
       } else {
         emit(RemoteArticleDone(articles: r));
       }
